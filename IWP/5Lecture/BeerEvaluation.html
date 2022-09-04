@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="da">
+  <head>
+    <title>IWP Demo</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <form id="beerForm">
+      <fieldset>
+        <legend>Vælg Øl Type:</legend>
+        <input type="radio" name="gæringstype" value="overgæret" checked />
+        Overgæret (Ale)
+        <input type="radio" name="gæringstype" value="undergæret" /> Undergæret
+        (Lager)
+        <input
+          type="radio"
+          name="gæringstype"
+          value="vildgæret"
+          id="vildgæret"
+        />
+        Vildtgæret (Lambic)
+        <input type="button" value="Start" id="startButton" />
+      </fieldset>
+    </form>
+    <script defer>
+      //opgave 1
+      const radioButtons = document.querySelectorAll(
+        'input[name="gæringstype"]'
+      );
+      for (const radioButton of radioButtons) {
+        radioButton.addEventListener("change", showSelected);
+      }
+
+      function showSelected(e) {
+        if (this.checked) {
+          console.log(this.value);
+        }
+      }
+      //opgave 2
+      const para = document.createElement("h1");
+      const node = document.createTextNode("Vælg en Øl-type");
+      para.appendChild(node);
+
+      document.body.insertBefore(para, document.getElementById("beerForm"));
+      //opgave 3
+      const startButton = document.getElementById("startButton");
+      startButton.addEventListener("click", showSelectedv2);
+      function showSelectedv2() {
+        for (const radioButton of radioButtons) {
+          console.log(radioButton.value + " " + radioButton.checked);
+        }
+      }
+      //opgave 4
+      document.addEventListener("mousemove", showHovered);
+      function showHovered(e) {
+        //console.clear();
+        //console.log(document.elementFromPoint(e.clientX, e.clientY));
+      }
+      //opgave 5
+      let beerTypes = {
+        ales: [
+          "Bitter",
+          "Pale Ale",
+          "Brown Ale",
+          "Trappist",
+          "Porter",
+          "Weizenbier",
+        ],
+        lagers: ["Pilsner", "Münchener", "Wiener", "Bock", "Porter"],
+        wilds: ["Gueuze", "Faro", "Fruit"],
+      };
+
+      const menu = document.createElement("select");
+      startButton.before(menu);
+
+      for (const radioButton of radioButtons) {
+        radioButton.addEventListener("change", changeList);
+      }
+      changeList();
+      function changeList() {
+        let child = menu.lastElementChild;
+        while (child) {
+          menu.removeChild(child);
+          child = menu.lastElementChild;
+        }
+        if (this.value == "undergæret") {
+          optionAdder(beerTypes.lagers);
+        } else if (this.value == "vildgæret") {
+          optionAdder(beerTypes.wilds);
+        } else {
+          optionAdder(beerTypes.ales);
+        }
+      }
+      function optionAdder(value) {
+        for (const string of value) {
+          let element = document.createElement("option");
+          element.setAttribute("value", string);
+          element.text = string;
+          menu.add(element);
+        }
+      }
+    </script>
+  </body>
+</html>
